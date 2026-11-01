@@ -1,226 +1,738 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-wl-brand>SYNTH-01 // FIELD INSTRUMENT</title>
+  <title data-brand="brand_name">KINETIC-01 — Precision CNC Machined Acoustic Hardware</title>
+  <meta name="description" content="CNC milled Grade 5 Titanium chassis. 40mm custom Beryllium transducers. Low-jitter 32-bit/384kHz Quad-DAC. Engineered in Bern, Switzerland.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="theme-tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script src="whitelabel.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg-main, #ECECE6);
-      color: var(--color-dark, #141413);
-      font-family: var(--font-primary, 'Space Grotesk', sans-serif);
-      line-height: 1.5;
-      /* Exposed 1px Technical CAD Blueprint Grid */
-      background-image: 
-        linear-gradient(to right, rgba(184, 184, 174, 0.4) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(184, 184, 174, 0.4) 1px, transparent 1px);
-      background-size: 32px 32px;
+    :root {
+      --bg-base: #0b0c0e;
+      --bg-surface: #121418;
+      --bg-card: #181b22;
+      --border-cad: rgba(255, 255, 255, 0.12);
+      --border-accent: #ff5500;
+      --accent-orange: #ff5500;
+      --accent-orange-hover: #e04b00;
+      --accent-cyan: #00f0ff;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --font-mono: 'Space Mono', monospace;
+      --font-sans: 'Geist', -apple-system, sans-serif;
+      --container-max: 1240px;
     }
 
-    /* Technical CAD Title Block */
-    .cad-header {
-      border-bottom: 2px solid var(--color-dark, #141413);
-      background: #ECECE6;
-      padding: 16px 32px;
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* TOP CAD HEADER */
+    .top-cad-bar {
+      border-bottom: 1px solid var(--border-cad);
+      background: rgba(11, 12, 14, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 10px 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
       display: flex;
       justify-content: space-between;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      height: 70px;
+      border-bottom: 1px solid var(--border-cad);
+      display: flex;
       align-items: center;
       position: sticky;
       top: 0;
+      background: rgba(11, 12, 14, 0.9);
+      backdrop-filter: blur(12px);
       z-index: 100;
-      font-family: var(--font-mono, 'JetBrains Mono', monospace);
-      font-size: 12px;
     }
-    .dwg-badge {
-      background: var(--color-primary, #FF4F00);
-      color: #FFF;
-      padding: 2px 6px;
-      font-weight: 700;
-    }
-
-    /* Hardware Stage */
-    .stage-section {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 24px;
-      text-align: center;
-    }
-    .stage-card {
-      background: #FFF;
-      border: 2px solid var(--color-dark);
-      padding: 40px;
-      position: relative;
-      box-shadow: 8px 8px 0px rgba(20, 20, 19, 0.15);
-      margin-bottom: 40px;
-    }
-    .crosshair-tl { position: absolute; top: 8px; left: 8px; font-family: monospace; }
-    .crosshair-br { position: absolute; bottom: 8px; right: 8px; font-family: monospace; }
-
-    .device-img-frame {
-      max-width: 620px;
-      margin: 0 auto 30px;
-      position: relative;
-    }
-    .device-img-frame img {
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       width: 100%;
-      height: auto;
-      display: block;
-      border: 1px solid #D4D4CE;
-      filter: contrast(105%);
     }
-
-    /* Exploded Component Callouts */
-    .pin-box {
-      position: absolute;
-      background: #FF4F00;
-      color: #FFF;
+    .brand-logo {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 16px;
       font-weight: 700;
-      padding: 4px 8px;
-      cursor: pointer;
-      box-shadow: 2px 2px 0 #000;
-      transition: transform 0.2s;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .pin-box:hover { transform: scale(1.1); }
-    .pin-1 { top: 25%; left: 18%; }
-    .pin-2 { top: 40%; right: 15%; }
-    .pin-3 { bottom: 20%; left: 35%; }
-
-    .finish-toggle {
-      display: inline-flex;
-      border: 2px solid var(--color-dark);
-      margin-bottom: 24px;
+    .cad-box-pill {
+      background: var(--accent-orange);
+      color: #000;
+      font-weight: 800;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 2px;
     }
-    .finish-btn {
-      background: none;
-      border: none;
-      border-right: 1px solid var(--color-dark);
-      padding: 8px 18px;
+    .nav-menu {
+      display: flex;
+      gap: 28px;
+      list-style: none;
       font-family: var(--font-mono);
       font-size: 12px;
-      cursor: pointer;
     }
-    .finish-btn:last-child { border-right: none; }
-    .finish-btn.active { background: var(--color-dark); color: #FFF; }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: var(--accent-orange); }
 
-    /* Acoustic EQ Curve */
-    .eq-panel {
-      background: #FFF;
-      border: 2px solid var(--color-dark);
-      padding: 24px;
-      text-align: left;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 22px;
       font-family: var(--font-mono);
-      margin-bottom: 60px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid var(--border-cad);
+      transition: all 0.2s ease;
+      background: transparent;
+      color: #fff;
+    }
+    .btn-orange {
+      background: var(--accent-orange);
+      border-color: var(--accent-orange);
+      color: #000;
+    }
+    .btn-orange:hover {
+      background: var(--accent-orange-hover);
+      box-shadow: 0 0 20px rgba(255, 85, 0, 0.4);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
     }
 
-    /* Sticky Bottom Pre-Order Bar */
-    .docked-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--color-dark, #141413);
-      color: #FFF;
-      padding: 16px 32px;
+    /* HERO SECTION */
+    .hero-section {
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-cad-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-orange);
+      letter-spacing: 0.15em;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    .hero-title {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 36px;
+      font-size: 16px;
+    }
+
+    /* BATCH QUOTA PROGRESS BAR */
+    .batch-meter-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-cad);
+      border-radius: 4px;
+      padding: 18px 24px;
+      max-width: 760px;
+      margin: 0 auto 48px;
+    }
+    .batch-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      z-index: 100;
       font-family: var(--font-mono);
+      font-size: 12px;
+      margin-bottom: 10px;
     }
-    .order-btn {
-      background: var(--color-primary, #FF4F00);
-      color: #FFF;
-      border: none;
-      padding: 12px 28px;
+    .batch-progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .batch-progress-fill {
+      width: 94.4%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff5500, #ff8800);
+      box-shadow: 0 0 12px rgba(255, 85, 0, 0.6);
+      transition: width 1s ease;
+    }
+
+    /* 360 DEGREE EXPLODED VIEW STAGE */
+    .cad-stage-section {
+      padding: 40px 0 80px;
+    }
+    .cad-stage-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-cad);
+      border-radius: 8px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cad-stage-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-cad);
+      padding-bottom: 14px;
+    }
+
+    .exploded-canvas-wrap {
+      min-height: 480px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* HARDWARE LAYERS (CSS 3D ANIMATED) */
+    .hw-layer {
+      position: absolute;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    .hw-chassis-front {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 8px solid #2d333f;
+      background: radial-gradient(circle, #1a1e24 0%, #0d0f12 100%);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.5);
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-orange);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .hw-magnet {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      border: 4px solid #4a5568;
+      background: #1f242d;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hw-driver {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-orange);
+      background: radial-gradient(circle, rgba(255,85,0,0.3) 0%, #15181e 100%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #fff;
+    }
+    .hw-pcb {
+      width: 190px;
+      height: 190px;
+      border-radius: 12px;
+      border: 2px dashed #00f0ff;
+      background: rgba(0, 240, 255, 0.05);
+      z-index: 2;
+    }
+    .hw-backplate {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background: #0f1217;
+      border: 4px solid #1f252f;
+      z-index: 1;
+    }
+
+    .exploded-scrubber-box {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .scrub-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-orange);
+      min-width: 180px;
+    }
+    .scrub-slider {
+      flex: 1;
+      height: 6px;
+      background: var(--border-cad);
+      outline: none;
+      -webkit-appearance: none;
+      border-radius: 3px;
+    }
+    .scrub-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-orange);
+    }
+
+    /* EQUALIZER DSP STUDIO */
+    .eq-section {
+      padding: 60px 0 100px;
+    }
+    .eq-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-cad);
+      border-radius: 8px;
+      padding: 36px;
+    }
+    .eq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .eq-grid { grid-template-columns: 1fr; }
+    }
+    .profile-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .profile-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .profile-pill:hover, .profile-pill.active {
+      border-color: var(--accent-orange);
+      background: rgba(255, 85, 0, 0.08);
+    }
+    .profile-pill.active .pill-name { color: var(--accent-orange); }
+
+    .pill-name {
       font-family: var(--font-mono);
       font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+    .pill-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    .canvas-wrap {
+      background: #060708;
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    #waveCanvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* PRE-ORDER DRAWER */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      justify-content: flex-end;
+    }
+    .drawer-overlay.open { display: flex; }
+    .drawer-panel {
+      width: 100%;
+      max-width: 480px;
+      background: #111317;
+      border-left: 1px solid var(--border-cad);
+      height: 100vh;
+      overflow-y: auto;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .colorway-options {
+      display: flex;
+      gap: 12px;
+      margin: 16px 0 24px;
+    }
+    .color-swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid transparent;
       cursor: pointer;
-      font-size: 13px;
+    }
+    .color-swatch.active { border-color: var(--accent-orange); }
+    .swatch-obsidian { background: #111; }
+    .swatch-bone { background: #e5e5e0; }
+    .swatch-orange { background: #ff5500; }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border-cad);
+      padding: 60px 0 30px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* TOAST */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--accent-orange);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      display: none;
+      z-index: 1001;
     }
   </style>
 </head>
-<body data-layout-archetype="swiss-cad-hardware-blueprint">
-  <div class="cad-header">
-    <div>
-      <span class="dwg-badge">DWG // TP-08-REV-C</span>
-      <span style="margin-left: 12px; font-weight: 700;" data-wl-brand>SYNTH-01 FIELD RECORDER</span>
-    </div>
-    <div style="color: #666;">
-      BATCH 03 / 500 UNITS • SCALE 1:1 • STOCKHOLM
+<body>
+
+  <!-- CAD SYSTEM BAR -->
+  <div class="top-cad-bar">
+    <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
+      <span>MODEL: KNTC-01 // ARCHITECTURE: DUAL BERYLLIUM 40MM</span>
+      <span>STATUS: BATCH 01 ALLOCATION [472/500]</span>
+      <span>DISPATCH: NOV 15, 2026</span>
     </div>
   </div>
 
-  <section class="stage-section">
-    <div class="stage-card">
-      <div class="crosshair-tl">+ 0.00 / 0.00</div>
-      <div class="crosshair-br">+ 240.00 / 180.00</div>
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="brand-logo" data-brand="brand_name">
+        <span>KINETIC AUDIO</span>
+        <span class="cad-box-pill">KNTC-01</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#exploded" class="nav-link">CAD Schematics</a></li>
+        <li><a href="#dsp" class="nav-link">Acoustic Studio</a></li>
+        <li><a href="#specs" class="nav-link">Tech Specs</a></li>
+        <li><a href="admin.html" class="nav-link" style="color: var(--accent-orange);">Assembly Hub &rarr;</a></li>
+      </ul>
+      <button class="btn btn-orange" onclick="openOrderDrawer()">Pre-Order (₹24,999)</button>
+    </div>
+  </nav>
 
-      <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:2px; margin-bottom:12px; color:var(--color-primary);">ANODIZED CNC SOLID BILLET ALUMINUM</div>
-      <h1 style="font-size:clamp(32px, 5vw, 54px); margin-bottom:16px;" data-wl-tagline>Pocket Acoustic Workstation.</h1>
-      <p style="max-width:540px; margin:0 auto 24px; color:#57534E;">Custom optical encoders with 1,024 ticks/rev, internal MEMS stereo microphone pair, and 12-hour rechargeable LiFePO4 battery.</p>
+  <!-- HERO SECTION -->
+  <header class="hero-section">
+    <div class="container">
+      <span class="hero-cad-tag">// GRADE 5 TITANIUM TRANSDUCER SYSTEM</span>
+      <h1 class="hero-title">
+        Acoustic Rigor Meets <br><span style="color: var(--accent-orange);">Zero Compromise</span>
+      </h1>
+      <p class="hero-desc">
+        Milled from a solid billet of aerospace titanium. Custom vapor-deposited beryllium diaphragms. 32-bit Quad-DAC architecture delivering clean transient precision.
+      </p>
 
-      <div class="finish-toggle">
-        <button class="finish-btn active" onclick="setFinish('Signal Orange')">01 SIGNAL ORANGE</button>
-        <button class="finish-btn" onclick="setFinish('Stealth Anodized')">02 STEALTH BLACK</button>
-        <button class="finish-btn" onclick="setFinish('Raw Aluminum')">03 RAW TITANIUM</button>
-      </div>
-
-      <div class="device-img-frame">
-        <img id="deviceImg" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1000&q=80" alt="Hardware Stage">
-        <div class="pin-box pin-1" onclick="alert('PIN 01: Optical Stepped Encoder Knob (Aircraft-grade Aluminum)')">01 ENCODER</div>
-        <div class="pin-box pin-2" onclick="alert('PIN 02: 120 FPS High-Contrast Dot-Matrix Viewport')">02 OLED MESH</div>
-        <div class="pin-box pin-3" onclick="alert('PIN 03: Balanced 4.4mm Low-Noise Preamp Input')">03 PREAMP</div>
+      <!-- BATCH QUOTA METER -->
+      <div class="batch-meter-box">
+        <div class="batch-header">
+          <span>Founders Batch 01 (500 Units Limit)</span>
+          <span style="color: var(--accent-orange); font-weight: 700;">472 / 500 Reserved (94.4%)</span>
+        </div>
+        <div class="batch-progress-track">
+          <div class="batch-progress-fill" id="meterFill"></div>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-top: 8px; text-align: left;">
+          Allocated orders lock lifetime hardware warranty and laser engraving serials.
+        </div>
       </div>
     </div>
+  </header>
 
-    <!-- Acoustic EQ Response Curve -->
-    <div class="eq-panel">
-      <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-        <span style="font-weight:700;">ACOUSTIC FREQUENCY RESPONSE PROFILE (20Hz – 24kHz)</span>
-        <span style="color:var(--color-primary);" id="curCurve">REFERENCE FLAT (±0.5 dB)</span>
-      </div>
-      <svg style="width:100%; height:100px; background:#F4F4F2; border:1px solid #D4D4CE;">
-        <line x1="0" y1="50" x2="100%" y2="50" stroke="#DDD" stroke-dasharray="4" />
-        <path d="M0,50 Q150,48 300,50 T600,49 T900,51" fill="none" stroke="#FF4F00" stroke-width="2.5" />
-      </svg>
-      <div style="display:flex; gap:12px; margin-top:12px; font-size:11px;">
-        <button onclick="setCurve('REFERENCE FLAT', 'M0,50 Q300,50 600,50 T1000,50')" style="padding:4px 8px; cursor:pointer;">FLAT</button>
-        <button onclick="setCurve('BASS BOOST (+6dB @ 80Hz)', 'M0,25 Q150,30 300,50 T1000,50')" style="padding:4px 8px; cursor:pointer;">SUB BASS</button>
-        <button onclick="setCurve('VOCAL PRESENCE (+3dB @ 3kHz)', 'M0,50 Q400,45 600,30 T1000,50')" style="padding:4px 8px; cursor:pointer;">VOCAL AIR</button>
+  <!-- 360 EXPLODED CAD VIEW STAGE -->
+  <section class="cad-stage-section" id="exploded">
+    <div class="container">
+      <div class="cad-stage-box">
+        <div class="cad-stage-header">
+          <span>SECTION: EXPLODED TRANSDUCER ASSEMBLY SCHEMATICS</span>
+          <span id="scrubPercent">EXPLODED DISPLACEMENT: 0%</span>
+        </div>
+
+        <div class="exploded-canvas-wrap" id="canvasWrap">
+          <div class="hw-layer hw-backplate" id="layerBack"></div>
+          <div class="hw-layer hw-pcb" id="layerPcb"></div>
+          <div class="hw-layer hw-magnet" id="layerMag"></div>
+          <div class="hw-layer hw-driver" id="layerDriver">40mm Beryllium</div>
+          <div class="hw-layer hw-chassis-front" id="layerFront">KNTC-01</div>
+        </div>
+
+        <div class="exploded-scrubber-box">
+          <span class="scrub-label">Scrub Assembly State &rarr;</span>
+          <input type="range" class="scrub-slider" id="scrubber" min="0" max="100" value="0" oninput="updateExplosion(this.value)">
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Sticky Docked Pre-Order Bar -->
-  <div class="docked-bar">
-    <div>
-      <div style="font-size:11px; color:#A8A29E;">BATCH 03 CROWDFUND</div>
-      <div style="font-size:16px; font-weight:700;">$249.00 USD <span style="font-size:12px; color:#FF4F00;">(MSRP $349)</span></div>
+  <!-- DSP & EQUALIZER STUDIO -->
+  <section class="eq-section" id="dsp">
+    <div class="container">
+      <div class="eq-card">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-orange); margin-bottom: 8px;">
+          DSP ENGINE // 32-BIT QUAD-DAC REAL-TIME FREQUENCY SHAPER
+        </div>
+        <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 32px;">Acoustic Calibration Studio</h2>
+
+        <div class="eq-grid">
+          <div class="profile-pills">
+            <div class="profile-pill active" onclick="setProfile('flat', this)">
+              <div>
+                <div class="pill-name">01. Studio Reference (Flat 0dB)</div>
+                <div class="pill-desc">Strict Harvester target curve for uncolored mastering analysis.</div>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-orange);">ACTIVE</span>
+            </div>
+
+            <div class="profile-pill" onclick="setProfile('bass', this)">
+              <div>
+                <div class="pill-name">02. Sub-Bass Transient (+6dB @ 40Hz)</div>
+                <div class="pill-desc">Tight planar extension with zero phase smearing in lower octaves.</div>
+              </div>
+            </div>
+
+            <div class="profile-pill" onclick="setProfile('vocal', this)">
+              <div>
+                <div class="pill-name">03. Vocal Presence (+3dB @ 2.5kHz)</div>
+                <div class="pill-desc">Elevates micro-textures and consonant air in acoustic recordings.</div>
+              </div>
+            </div>
+
+            <div class="profile-pill" onclick="setProfile('spatial', this)">
+              <div>
+                <div class="pill-name">04. Binaural Spatial Atmos</div>
+                <div class="pill-desc">Virtual cross-feed algorithm expanding head-stage acoustics.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="waveCanvas"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
-    <div style="display:flex; align-items:center; gap:20px;">
-      <div style="font-size:12px; color:#A8A29E;">84% FUNDED • 14 DAYS REMAINING</div>
-      <button class="order-btn" onclick="reserveUnit()">RESERVE PLEDGE</button>
+  </section>
+
+  <!-- PRE-ORDER DRAWER -->
+  <div class="drawer-overlay" id="orderDrawer" onclick="closeOrderDrawer(event)">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h3 style="font-family: var(--font-mono); font-size: 16px; color: #fff;">FOUNDERS ALLOCATION</h3>
+          <button style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;" onclick="closeOrderDrawer()">&times;</button>
+        </div>
+
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--accent-orange); margin-bottom: 16px;">
+          ₹24,999 <span style="font-size: 12px; color: var(--text-dim);">// INCL. GST</span>
+        </div>
+
+        <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block;">Select Colorway</label>
+        <div class="colorway-options">
+          <div class="color-swatch swatch-obsidian active" onclick="setColorway('Matte Obsidian', this)"></div>
+          <div class="color-swatch swatch-bone" onclick="setColorway('Industrial Bone', this)"></div>
+          <div class="color-swatch swatch-orange" onclick="setColorway('Cyber Safety Orange', this)"></div>
+        </div>
+
+        <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Laser Engraved Serial ID (Max 12 Chars)</label>
+        <input type="text" id="engravingInput" maxlength="12" placeholder="e.g. STUDIO-01" style="width: 100%; background: #000; border: 1px solid var(--border-cad); color: #fff; padding: 10px 12px; font-family: var(--font-mono); font-size: 13px; margin-bottom: 24px;">
+
+        <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Contact Phone *</label>
+        <input type="tel" id="orderPhone" placeholder="+91 98401 00000" style="width: 100%; background: #000; border: 1px solid var(--border-cad); color: #fff; padding: 10px 12px; font-family: var(--font-mono); font-size: 13px; margin-bottom: 16px;">
+
+        <label style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px;">Full Name *</label>
+        <input type="text" id="orderName" placeholder="Karan Singhal" style="width: 100%; background: #000; border: 1px solid var(--border-cad); color: #fff; padding: 10px 12px; font-family: var(--font-mono); font-size: 13px;">
+      </div>
+
+      <button class="btn btn-orange" style="width: 100%; padding: 14px; margin-top: 24px;" onclick="confirmPreorder()">
+        Confirm Pre-Order (Simulate UPI)
+      </button>
     </div>
   </div>
 
+  <div class="toast-box" id="toastNotice"></div>
+
+  <footer class="footer">
+    <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+      <div>&copy; 2026 <span data-brand="brand_name">KINETIC AUDIO LABS</span>. BERNE // BENGALURU</div>
+      <div>
+        <a href="admin.html" style="color: var(--accent-orange); text-decoration: none;">Production Assembly Hub &rarr;</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    function setFinish(name) {
-      document.querySelectorAll('.finish-btn').forEach(b => b.classList.toggle('active', b.textContent.includes(name)));
+    // EXPLODED VIEW SCRUBBER
+    function updateExplosion(val) {
+      document.getElementById('scrubPercent').textContent = `EXPLODED DISPLACEMENT: ${val}%`;
+      const p = val / 100;
+
+      // Displace layers laterally and vertically
+      document.getElementById('layerFront').style.transform = `translateX(${p * 220}px) translateY(${-p * 60}px) scale(${1 + p * 0.1})`;
+      document.getElementById('layerMag').style.transform = `translateX(${p * 110}px) translateY(${-p * 30}px)`;
+      document.getElementById('layerDriver').style.transform = `translateX(${p * 0}px) translateY(${p * 0}px) scale(${1 - p * 0.05})`;
+      document.getElementById('layerPcb').style.transform = `translateX(${-p * 120}px) translateY(${p * 40}px)`;
+      document.getElementById('layerBack').style.transform = `translateX(${-p * 240}px) translateY(${p * 70}px)`;
     }
-    function setCurve(name, d) {
-      document.getElementById('curCurve').textContent = name;
+
+    // AUDIO WAVEFORM CANVAS SIMULATOR
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 400;
+    canvas.height = 200;
+    let waveFreq = 0.02;
+    let waveAmp = 30;
+    let step = 0;
+
+    function drawWave() {
+      ctx.fillStyle = '#060708';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#ff5500';
+
+      for (let x = 0; x < canvas.width; x++) {
+        const y = canvas.height / 2 + Math.sin(x * waveFreq + step) * waveAmp * Math.sin(x * 0.005);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      step += 0.05;
+      requestAnimationFrame(drawWave);
     }
-    function reserveUnit() {
-      const email = prompt("Enter shipping email for Batch 03 Serial Reservation:");
-      if (email) alert("Reservation confirmed for " + email + ". Serial number will be engraved.");
+    drawWave();
+
+    function setProfile(type, el) {
+      document.querySelectorAll('.profile-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+
+      if (type === 'flat') { waveFreq = 0.02; waveAmp = 25; }
+      else if (type === 'bass') { waveFreq = 0.01; waveAmp = 55; }
+      else if (type === 'vocal') { waveFreq = 0.04; waveAmp = 35; }
+      else if (type === 'spatial') { waveFreq = 0.03; waveAmp = 45; }
+    }
+
+    // PRE-ORDER DRAWER
+    let selectedColor = 'Matte Obsidian';
+    function openOrderDrawer() {
+      document.getElementById('orderDrawer').classList.add('open');
+    }
+    function closeOrderDrawer(e) {
+      document.getElementById('orderDrawer').classList.remove('open');
+    }
+    function setColorway(c, el) {
+      selectedColor = c;
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    async function confirmPreorder() {
+      const name = document.getElementById('orderName').value;
+      const phone = document.getElementById('orderPhone').value;
+      const eng = document.getElementById('engravingInput').value;
+
+      if (!name || !phone) {
+        alert("Please enter full name and phone number.");
+        return;
+      }
+
+      try {
+        await fetch('/api/preorders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ customer_name: name, phone: phone, colorway: selectedColor, custom_engraving: eng })
+        });
+      } catch (err) {}
+
+      document.getElementById('orderDrawer').classList.remove('open');
+      showToast(`⚡ Batch 01 Pre-order verified for ${name}! Serial allocated.`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastNotice');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 4000);
     }
   </script>
 </body>

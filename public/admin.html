@@ -2,23 +2,453 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title data-wl-brand>SYNTH-01 // Laser Engraving & BOM Queue</title>
-  <link rel="stylesheet" href="theme-tokens.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-brand="brand_name">KINETIC Assembly Ops — Batch Fulfillment & Hardware Telemetry Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="whitelabel.js"></script>
   <style>
-    body { background: #141413; color: #ECECE6; font-family: monospace; padding: 24px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #333; padding: 10px; text-align: left; }
-    th { background: #222; }
+    :root {
+      --bg-base: #0a0b0d;
+      --bg-surface: #111317;
+      --bg-card: #181b22;
+      --border-cad: rgba(255, 255, 255, 0.1);
+      --accent-orange: #ff5500;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --font-mono: 'Space Mono', monospace;
+      --font-sans: 'Geist', sans-serif;
+      --sidebar-width: 250px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-cad);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-cad);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .sidebar-nav {
+      list-style: none;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .nav-item {
+      padding: 10px 12px;
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: rgba(255, 85, 0, 0.1);
+      color: #fff;
+    }
+    .nav-item.active {
+      color: var(--accent-orange);
+      font-weight: 700;
+    }
+
+    .main-wrap {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      height: 64px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-cad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+    .content-body {
+      padding: 28px;
+      flex: 1;
+    }
+
+    /* METRIC CARDS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 1024px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      padding: 20px;
+    }
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* TABS */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* FACTORY ASSEMBLY PIPELINE */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 1024px) {
+      .pipeline-grid { grid-template-columns: 1fr; }
+    }
+    .pipe-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      position: relative;
+    }
+    .pipe-step-card.active {
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 15px rgba(255, 85, 0, 0.2);
+    }
+    .pipe-step-num {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+    .pipe-step-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .pipe-step-status {
+      font-size: 11px;
+      color: var(--accent-orange);
+    }
+
+    /* TABLE */
+    .table-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cad);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .hw-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .hw-table th {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 12px 16px;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border-cad);
+      text-align: left;
+    }
+    .hw-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-cad);
+      color: var(--text-muted);
+    }
+    .hw-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border: 1px solid var(--accent-orange);
+      background: var(--accent-orange);
+      color: #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #181b22;
+      border: 1px solid var(--accent-orange);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 12px 18px;
+      border-radius: 4px;
+      display: none;
+      z-index: 999;
+    }
   </style>
 </head>
-<body data-layout-archetype="swiss-cad-admin">
-  <h2><span data-wl-brand>SYNTH-01</span> — Factory Production & CNC Engraving Ledger</h2>
-  <table>
-    <tr><th>Serial #</th><th>Finish</th><th>Custom Laser Engraving</th><th>Status</th></tr>
-    <tr><td>#SN-03-001</td><td>Signal Orange</td><td>"APEX SOUND LABS"</td><td style="color:#FF4F00;">CNC Complete</td></tr>
-    <tr><td>#SN-03-002</td><td>Raw Titanium</td><td>"K. J. 2026"</td><td style="color:#10B981;">Packaged</td></tr>
-    <tr><td>#SN-03-003</td><td>Stealth Anodized</td><td>"NO BORDERS"</td><td style="color:#F59E0B;">Laser Etch</td></tr>
-  </table>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header" data-brand="brand_name">
+      KINETIC HARDWARE LABS
+    </div>
+    <ul class="sidebar-nav">
+      <li class="nav-item active" onclick="switchTab('pipeline', this)">
+        <span>🏭</span>
+        <span>Assembly Pipeline</span>
+      </li>
+      <li class="nav-item" onclick="switchTab('orders', this)">
+        <span>📦</span>
+        <span>Pre-Orders Ledger</span>
+      </li>
+      <li class="nav-item" onclick="switchTab('telemetry', this)">
+        <span>📈</span>
+        <span>Acoustic QA Matrix</span>
+      </li>
+      <li class="nav-item" onclick="switchTab('settings', this)">
+        <span>⚙️</span>
+        <span>Batch Configuration</span>
+      </li>
+    </ul>
+    <div style="padding: 16px; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); border-top: 1px solid var(--border-cad);">
+      FIRMWARE: v1.8.4-DSP
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrap">
+    <header class="topbar">
+      <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700;" id="pageTitle">
+        PRODUCTION ASSEMBLY PIPELINE // FOUNDERS BATCH 01
+      </div>
+      <a href="index.html" class="btn" style="background: transparent; color: var(--accent-orange); text-decoration: none;" target="_blank">
+        CAD Stage &rarr;
+      </a>
+    </header>
+
+    <main class="content-body">
+      <!-- METRICS -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Batch 01 Allocated</div>
+          <div class="metric-val">472 / 500</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Capital Committed</div>
+          <div class="metric-val">₹1.18 Cr</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Current Phase</div>
+          <div class="metric-val" style="color: var(--accent-orange);">QA Chamber</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Beryllium Yield Pass</div>
+          <div class="metric-val" style="color: #34d399;">99.86%</div>
+        </div>
+      </div>
+
+      <!-- TAB 1: PIPELINE -->
+      <section class="tab-pane active" id="tabPipeline">
+        <div class="pipeline-grid">
+          <div class="pipe-step-card">
+            <div class="pipe-step-num">STAGE 01</div>
+            <div class="pipe-step-title">CNC Titanium Milling</div>
+            <div class="pipe-step-status" style="color: #34d399;">✓ Completed</div>
+          </div>
+          <div class="pipe-step-card">
+            <div class="pipe-step-num">STAGE 02</div>
+            <div class="pipe-step-title">SMT Surface PCB Mount</div>
+            <div class="pipe-step-status" style="color: #34d399;">✓ Completed</div>
+          </div>
+          <div class="pipe-step-card active">
+            <div class="pipe-step-num">STAGE 03</div>
+            <div class="pipe-step-title">Acoustic QA & Tuning</div>
+            <div class="pipe-step-status">● In Progress</div>
+          </div>
+          <div class="pipe-step-card">
+            <div class="pipe-step-num">STAGE 04</div>
+            <div class="pipe-step-title">Laser Serial Engraving</div>
+            <div class="pipe-step-status" style="color: var(--text-dim);">Queued</div>
+          </div>
+          <div class="pipe-step-card">
+            <div class="pipe-step-num">STAGE 05</div>
+            <div class="pipe-step-title">Express Air Freight</div>
+            <div class="pipe-step-status" style="color: var(--text-dim);">Queued (Nov 15)</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-cad); padding: 24px; border-radius: 6px;">
+          <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #fff;">
+            Current Action: Acoustic Anechoic Chamber Calibration
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+            Every single transducer in Founders Batch 01 undergoes an individualized 128-point frequency response sweep. DSP firmware flashing is currently automated on Bench 04.
+          </p>
+          <button class="btn" onclick="advanceStage()">Advance Batch Phase &rarr;</button>
+        </div>
+      </section>
+
+      <!-- TAB 2: PRE-ORDERS -->
+      <section class="tab-pane" id="tabOrders">
+        <div class="table-card">
+          <table class="hw-table">
+            <thead>
+              <tr>
+                <th>Serial ID</th>
+                <th>Client Name</th>
+                <th>Phone</th>
+                <th>Colorway</th>
+                <th>Laser Engraving</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color: var(--accent-orange); font-weight: 700;">KNTC-001</td>
+                <td>Arjun Vasudevan</td>
+                <td>+91 98401 22990</td>
+                <td>Matte Obsidian</td>
+                <td>STUDIO-01</td>
+                <td>₹24,999</td>
+                <td><span style="color: #34d399;">● PAID</span></td>
+              </tr>
+              <tr>
+                <td style="color: var(--accent-orange); font-weight: 700;">KNTC-002</td>
+                <td>Lukas Lindqvist</td>
+                <td>+46 70 123 4567</td>
+                <td>Cyber Safety Orange</td>
+                <td>LINDQVIST</td>
+                <td>₹24,999</td>
+                <td><span style="color: #34d399;">● PAID</span></td>
+              </tr>
+              <tr>
+                <td style="color: var(--accent-orange); font-weight: 700;">KNTC-003</td>
+                <td>Nadia Chen</td>
+                <td>+1 415 889 0122</td>
+                <td>Industrial Bone</td>
+                <td>POLYPHONIC</td>
+                <td>₹24,999</td>
+                <td><span style="color: #34d399;">● PAID</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: TELEMETRY -->
+      <section class="tab-pane" id="tabTelemetry">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-cad); padding: 24px; border-radius: 6px;">
+          <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; margin-bottom: 16px; color: #fff;">
+            Frequency Response Tolerance Matrix (20Hz - 40,000Hz)
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); line-height: 1.8;">
+            ● Channel Matching L/R: &lt; 0.25 dB deviation<br>
+            ● Total Harmonic Distortion (THD): 0.038% @ 1kHz, 100dB SPL<br>
+            ● Diaphragm Damping Ratio: Qm = 4.2<br>
+            ● Quad-DAC Clock Jitter: 12 Picoseconds
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SETTINGS -->
+      <section class="tab-pane" id="tabSettings">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-cad); padding: 24px; border-radius: 6px; max-width: 500px;">
+          <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; margin-bottom: 16px;">
+            Hardware Parameters & Quotas
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-family: var(--font-mono); font-size: 11px; margin-bottom: 6px;">Founders Batch Cap</label>
+            <input type="number" value="500" style="width: 100%; background: #000; border: 1px solid var(--border-cad); color: #fff; padding: 8px 12px; font-family: var(--font-mono);">
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-family: var(--font-mono); font-size: 11px; margin-bottom: 6px;">Concierge WhatsApp</label>
+            <input type="text" id="cfgWa" value="919061902295" style="width: 100%; background: #000; border: 1px solid var(--border-cad); color: #fff; padding: 8px 12px; font-family: var(--font-mono);">
+          </div>
+          <button class="btn" onclick="showToast('Hardware batch quotas updated.')">Save Configuration</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast-box" id="toastNotice"></div>
+
+  <script>
+    function switchTab(tab, el) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      if (tab === 'pipeline') {
+        document.getElementById('tabPipeline').classList.add('active');
+        document.getElementById('pageTitle').textContent = 'PRODUCTION ASSEMBLY PIPELINE // FOUNDERS BATCH 01';
+      } else if (tab === 'orders') {
+        document.getElementById('tabOrders').classList.add('active');
+        document.getElementById('pageTitle').textContent = 'ALLOCATED PRE-ORDERS & SERIAL LEDGER';
+      } else if (tab === 'telemetry') {
+        document.getElementById('tabTelemetry').classList.add('active');
+        document.getElementById('pageTitle').textContent = 'ACOUSTIC QA CHAMBER TELEMETRY';
+      } else if (tab === 'settings') {
+        document.getElementById('tabSettings').classList.add('active');
+        document.getElementById('pageTitle').textContent = 'HARDWARE BATCH CONFIGURATION';
+      }
+    }
+
+    function advanceStage() {
+      showToast('Phase advanced: Laser serial engraving initiated!');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastNotice');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+  </script>
 </body>
 </html>
