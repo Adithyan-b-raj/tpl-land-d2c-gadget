@@ -1,0 +1,17 @@
+/* Extracted via tpl-tools-design-extractor (Industrial Precision Hardware Launch (Teenage Engineering / Nothing Style)) */
+:root {
+  --font-primary: 'Space Grotesk', sans-serif;
+  --font-accent: 'JetBrains Mono', monospace;
+  --color-primary: #FF4F00;
+  --brand-primary: var(--color-primary);
+  --color-dark: #111111;
+  --brand-dark: var(--color-dark);
+  --bg-main: #F4F4F2;
+  --bg-canvas: #EAEAE6;
+  --bg-sand: var(--bg-canvas);
+  --border-color: #D4D4CE;
+  --grid-gap-desktop: 20px 20px;
+  --grid-gap-mobile: 14px 14px;
+  --radius: 6px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
